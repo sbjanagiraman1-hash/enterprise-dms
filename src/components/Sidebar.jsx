@@ -2,6 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
+  Building2,
+  ShieldCheck,
+  FolderGit2,
+  Network,
+  Share2,
   HelpCircle,
   HardDrive,
   X
@@ -18,6 +23,31 @@ const navItems = [
     name: "Dashboard",
     icon: LayoutDashboard,
     path: "/"
+  },
+  {
+    name: "Organization Settings & Branding",
+    icon: Building2,
+    path: "/organization-settings"
+  },
+  {
+    name: "Audit Logs & Compliance",
+    icon: ShieldCheck,
+    path: "/audit-logs-compliance"
+  },
+  {
+    name: "File History & Collaboration Drawer",
+    icon: FolderGit2,
+    path: "/file-history-collaboration"
+  },
+  {
+    name: "Organization Structure & Quotas",
+    icon: Network,
+    path: "/organization-structure-quotas"
+  },
+  {
+    name: "Sharing & Collaboration Settings",
+    icon: Share2,
+    path: "/sharing-collaboration-settings"
   }
 ];
 
