@@ -4,7 +4,9 @@ import {
   LayoutDashboard, 
   HelpCircle,
   HardDrive,
-  X
+  X,
+  Activity,
+  User
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -18,6 +20,16 @@ const navItems = [
     name: "Dashboard",
     icon: LayoutDashboard,
     path: "/"
+  },
+  {
+    name: "System State",
+    icon: Activity,
+    path: "/system-state"
+  },
+  {
+    name: "User Profile",
+    icon: User,
+    path: "/user-profile"
   }
 ];
 

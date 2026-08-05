@@ -23,6 +23,8 @@ export default function Navbar({ toggleSidebar }) {
   const getPageTitle = (pathname) => {
     switch (pathname) {
       case '/': return 'Dashboard';
+      case '/user-profile': return 'User Profile';
+      case '/system-state': return 'System State';
       case '/my-files': return 'My Files';
       case '/shared-files': return 'Shared with Me';
       case '/approvals': return 'Approvals';

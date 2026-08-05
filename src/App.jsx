@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import MainLayout from './layouts/MainLayout';
 import UserManagement from './pages/UserManagement';
+import SystemState from './pages/SystemState';
+import UserProfile from './pages/UserProfile';
 
 // Dummy placeholder pages
 const Dashboard = () => <div className="p-4 bg-card dark:bg-slate-900 rounded-2xl border border-border">Dashboard Content</div>;
@@ -18,6 +20,8 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="system-state" element={<SystemState />} />
+            <Route path="user-profile" element={<UserProfile />} />
             <Route path="my-files" element={<MyFiles />} />
             <Route path="shared-files" element={<SharedFiles />} />
             <Route path="approvals" element={<Approvals />} />
