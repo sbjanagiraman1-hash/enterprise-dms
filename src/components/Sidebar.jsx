@@ -4,6 +4,11 @@ import {
   LayoutDashboard, 
   HelpCircle,
   HardDrive,
+  Activity,
+  Command,
+  Smartphone,
+  FolderOpen,
+  Bell,
   X
 } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -18,6 +23,31 @@ const navItems = [
     name: "Dashboard",
     icon: LayoutDashboard,
     path: "/"
+  },
+  {
+    name: "System Status",
+    icon: Activity,
+    path: "/system-status"
+  },
+  {
+    name: "Global Command Palette",
+    icon: Command,
+    path: "/global-command-palette"
+  },
+  {
+    name: "Mobile Analytics",
+    icon: Smartphone,
+    path: "/mobile-analytics"
+  },
+  {
+    name: "Mobile File Explorer",
+    icon: FolderOpen,
+    path: "/mobile-file-explorer"
+  },
+  {
+    name: "Enterprise Notification Center",
+    icon: Bell,
+    path: "/enterprise-notification-center"
   }
 ];
 
