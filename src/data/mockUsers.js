@@ -1,0 +1,72 @@
+export const mockUsers = [
+  {
+    id: "EMP-001",
+    name: "Sarah Chen",
+    email: "sarah.chen@globalcorp.com",
+    avatar: "SC",
+    role: "Admin",
+    department: "Engineering",
+    designation: "VP of Engineering",
+    status: "Active",
+    lastLogin: "2026-08-05 09:30 AM",
+    createdDate: "2024-01-15",
+    phone: "+1 (555) 123-4567",
+    manager: "CEO"
+  },
+  {
+    id: "EMP-002",
+    name: "Michael Chang",
+    email: "m.chang@globalcorp.com",
+    avatar: "MC",
+    role: "Manager",
+    department: "Finance",
+    designation: "Finance Director",
+    status: "Active",
+    lastLogin: "2026-08-05 08:15 AM",
+    createdDate: "2024-03-22",
+    phone: "+1 (555) 987-6543",
+    manager: "CFO"
+  },
+  {
+    id: "EMP-003",
+    name: "Emma Watson",
+    email: "emma.w@globalcorp.com",
+    avatar: "EW",
+    role: "Editor",
+    department: "Marketing",
+    designation: "Content Strategist",
+    status: "Pending",
+    lastLogin: "Never",
+    createdDate: "2026-08-04",
+    phone: "+1 (555) 456-7890",
+    manager: "CMO"
+  },
+  {
+    id: "EMP-004",
+    name: "James Wilson",
+    email: "j.wilson@globalcorp.com",
+    avatar: "JW",
+    role: "Viewer",
+    department: "Legal",
+    designation: "Legal Counsel",
+    status: "Suspended",
+    lastLogin: "2026-07-28 11:20 AM",
+    createdDate: "2025-11-10",
+    phone: "+1 (555) 789-0123",
+    manager: "General Counsel"
+  },
+  {
+    id: "EMP-005",
+    name: "David Miller",
+    email: "david.m@globalcorp.com",
+    avatar: "DM",
+    role: "Editor",
+    department: "Engineering",
+    designation: "Senior Developer",
+    status: "Locked",
+    lastLogin: "2026-08-01 02:45 PM",
+    createdDate: "2025-06-18",
+    phone: "+1 (555) 234-5678",
+    manager: "Sarah Chen"
+  }
+];
