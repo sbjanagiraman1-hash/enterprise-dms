@@ -9,6 +9,11 @@ import Dashboard from './pages/Dashboard';
 import ApprovalWorkflow from './pages/ApprovalWorkflow';
 import PermissionMatrix from './pages/PermissionMatrix';
 import UserManagement from './pages/UserManagement';
+import OrganizationSettings from './pages/OrganizationSettings/OrganizationSettings';
+import AuditLogsCompliance from './pages/AuditLogsCompliance/AuditLogsCompliance';
+import FileHistoryCollaboration from './pages/FileHistoryCollaboration/FileHistoryCollaboration';
+import OrganizationStructureQuotas from './pages/OrganizationStructureQuotas/OrganizationStructureQuotas';
+import SharingCollaborationSettings from './pages/SharingCollaborationSettings/SharingCollaborationSettings';
 
 // Dummy placeholder pages
 const SharedFiles = () => <div className="p-4 bg-card dark:bg-slate-900 rounded-2xl border border-border">Shared Files Content</div>;
@@ -30,6 +35,11 @@ function App() {
             <Route path="shared-files" element={<SharedFiles />} />
             <Route path="approvals" element={<Approvals />} />
             <Route path="user-management" element={<UserManagement />} />
+            <Route path="organization-settings" element={<OrganizationSettings />} />
+            <Route path="audit-logs-compliance" element={<AuditLogsCompliance />} />
+            <Route path="file-history-collaboration" element={<FileHistoryCollaboration />} />
+            <Route path="organization-structure-quotas" element={<OrganizationStructureQuotas />} />
+            <Route path="sharing-collaboration-settings" element={<SharingCollaborationSettings />} />
             <Route path="settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
