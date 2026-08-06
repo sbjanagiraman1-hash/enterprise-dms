@@ -22,6 +22,11 @@ import EnterpriseNotificationCenter from './pages/EnterpriseNotificationCenter';
 import { useNavigate } from 'react-router-dom';
 import SystemState from './pages/SystemState';
 import UserProfile from './pages/UserProfile';
+import FolderManagementPage from './pages/FolderManagementPage';
+import AdvancedSearchOCRDiscovery from './pages/AdvancedSearchOCRDiscovery';
+import BackupRecoveryManagement from './pages/BackupRecoveryManagement';
+import EnterpriseReportsInsights from './pages/EnterpriseReportsInsights';
+import SecurityPolicies2FA from './pages/SecurityPolicies2FA';
 
 // Dummy placeholder pages
 const SharedFiles = () => <div className="p-4 bg-card dark:bg-slate-900 rounded-2xl border border-border">Shared Files Content</div>;
@@ -53,14 +58,19 @@ function App() {
         <BrowserRouter>
           <CommandPaletteShortcutListener />
         <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<EnterpriseAnalytics />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="system-state" element={<SystemState />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<EnterpriseAnalytics />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="system-state" element={<SystemState />} />
             <Route path="user-profile" element={<UserProfile />} />
             <Route path="file-explorer" element={<FileExplorer />} />
-              <Route path="approval-workflow" element={<ApprovalWorkflow />} />
-              <Route path="permission-matrix" element={<PermissionMatrix />} />
+            <Route path="approval-workflow" element={<ApprovalWorkflow />} />
+            <Route path="permission-matrix" element={<PermissionMatrix />} />
+            <Route path="folder-management" element={<FolderManagementPage />} />
+            <Route path="advanced-search-ocr" element={<AdvancedSearchOCRDiscovery />} />
+            <Route path="backup-recovery" element={<BackupRecoveryManagement />} />
+            <Route path="reports-insights" element={<EnterpriseReportsInsights />} />
+            <Route path="security-policies-2fa" element={<SecurityPolicies2FA />} />
             <Route path="shared-files" element={<SharedFiles />} />
             <Route path="approvals" element={<Approvals />} />
             <Route path="user-management" element={<UserManagement />} />

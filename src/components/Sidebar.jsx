@@ -7,6 +7,10 @@ import {
   FolderGit2,
   Network,
   Share2,
+  Folder,
+  ScanSearch,
+  DatabaseBackup,
+  BarChart3,
   HelpCircle,
   HardDrive,
   FolderOpen,
@@ -112,6 +116,31 @@ const navItems = [
     name: "Sharing & Collaboration Settings",
     icon: Share2,
     path: "/sharing-collaboration-settings"
+  },
+  {
+    name: "Folder Management & Properties",
+    icon: Folder,
+    path: "/folder-management"
+  },
+  {
+    name: "Advanced Search & OCR Discovery",
+    icon: ScanSearch,
+    path: "/advanced-search-ocr"
+  },
+  {
+    name: "Backup & Recovery Management",
+    icon: DatabaseBackup,
+    path: "/backup-recovery"
+  },
+  {
+    name: "Enterprise Reports & Insights",
+    icon: BarChart3,
+    path: "/reports-insights"
+  },
+  {
+    name: "Security Policies & 2FA Authentication",
+    icon: ShieldCheck,
+    path: "/security-policies-2fa"
   }
 ];
 
