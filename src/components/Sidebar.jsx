@@ -11,7 +11,6 @@ import {
   HardDrive,
   FolderOpen,
   ClipboardCheck,
-  ShieldCheck,
   Users,
   X
 } from 'lucide-react';
