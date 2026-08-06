@@ -16,6 +16,21 @@ import ProfileMenu from './ProfileMenu';
 
 export default function Navbar({ toggleSidebar }) {
   const { theme, toggleTheme } = useTheme();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const getPageTitle = (pathname) => {
+    switch (pathname) {
+      case '/': return 'Dashboard';
+      case '/user-profile': return 'User Profile';
+      case '/system-state': return 'System State';
+      case '/my-files': return 'My Files';
+      case '/shared-files': return 'Shared with Me';
+      case '/approvals': return 'Approvals';
+      case '/user-management': return 'User Management';
+      case '/settings': return 'System Settings';
+      default: return 'Dashboard';
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-card/80 backdrop-blur-md dark:bg-slate-900/80 border-b border-border">

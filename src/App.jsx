@@ -20,6 +20,8 @@ import MobileAnalytics from './pages/MobileAnalytics';
 import MobileFileExplorer from './pages/MobileFileExplorer';
 import EnterpriseNotificationCenter from './pages/EnterpriseNotificationCenter';
 import { useNavigate } from 'react-router-dom';
+import SystemState from './pages/SystemState';
+import UserProfile from './pages/UserProfile';
 
 // Dummy placeholder pages
 const SharedFiles = () => <div className="p-4 bg-card dark:bg-slate-900 rounded-2xl border border-border">Shared Files Content</div>;
@@ -54,7 +56,9 @@ function App() {
             <Route path="/" element={<MainLayout />}>
               <Route index element={<EnterpriseAnalytics />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="file-explorer" element={<FileExplorer />} />
+              <Route path="system-state" element={<SystemState />} />
+            <Route path="user-profile" element={<UserProfile />} />
+            <Route path="file-explorer" element={<FileExplorer />} />
               <Route path="approval-workflow" element={<ApprovalWorkflow />} />
               <Route path="permission-matrix" element={<PermissionMatrix />} />
             <Route path="shared-files" element={<SharedFiles />} />
