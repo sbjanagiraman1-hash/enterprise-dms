@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
+import {
+  LayoutDashboard,
   Building2,
   ShieldCheck,
   FolderGit2,
@@ -29,7 +29,7 @@ const navItems = [
   },
   {
     name: "Enterprise Analytics",
-    icon: HardDrive, 
+    icon: HardDrive,
     path: "/"
   },
   {
@@ -122,14 +122,14 @@ export default function Sidebar() {
             <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Production Instance</span>
           </div>
         </div>
-        <button 
+        <button
           onClick={closeSidebar}
           className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
-      
+
       <div className="flex-1 py-6 px-4 space-y-1 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
@@ -138,8 +138,8 @@ export default function Sidebar() {
             onClick={closeSidebar}
             className={({ isActive }) => cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group text-sm font-medium",
-              isActive 
-                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20" 
+              isActive
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                 : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
             )}
           >
@@ -148,7 +148,7 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </div>
-      
+
       <div className="p-4 border-t border-border space-y-1 bg-slate-50/50 dark:bg-slate-900/50 mt-auto">
         <a href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100">
           <HelpCircle className="w-5 h-5" />
