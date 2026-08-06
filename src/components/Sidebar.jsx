@@ -2,26 +2,82 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
+  Building2,
+  ShieldCheck,
+  FolderGit2,
+  Network,
+  Share2,
   HelpCircle,
   HardDrive,
+  FolderOpen,
+  ClipboardCheck,
+  Users,
   X
 } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
+import { cn } from '../utils/cn';
+import { useSidebar } from '../context/SidebarContext';
 
 const navItems = [
   {
     name: "Dashboard",
     icon: LayoutDashboard,
+    path: "/dashboard"
+  },
+  {
+    name: "Enterprise Analytics",
+    icon: HardDrive, 
     path: "/"
+  },
+  {
+    name: "File Explorer",
+    icon: FolderOpen,
+    path: "/file-explorer"
+  },
+  {
+    name: "Approval Workflow",
+    icon: ClipboardCheck,
+    path: "/approval-workflow"
+  },
+  {
+    name: "Permission Matrix",
+    icon: ShieldCheck,
+    path: "/permission-matrix"
+  },
+  {
+    name: "User Management",
+    icon: Users,
+    path: "/user-management"
+  },
+  {
+    name: "Organization Settings & Branding",
+    icon: Building2,
+    path: "/organization-settings"
+  },
+  {
+    name: "Audit Logs & Compliance",
+    icon: ShieldCheck,
+    path: "/audit-logs-compliance"
+  },
+  {
+    name: "File History & Collaboration Drawer",
+    icon: FolderGit2,
+    path: "/file-history-collaboration"
+  },
+  {
+    name: "Organization Structure & Quotas",
+    icon: Network,
+    path: "/organization-structure-quotas"
+  },
+  {
+    name: "Sharing & Collaboration Settings",
+    icon: Share2,
+    path: "/sharing-collaboration-settings"
   }
 ];
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar() {
+  const { isOpen, closeSidebar } = useSidebar();
+
   return (
     <aside className={cn(
       "fixed left-0 top-0 z-40 w-64 h-screen border-r bg-card dark:bg-slate-900 border-border flex flex-col shadow-sm transition-transform duration-300 lg:translate-x-0",
@@ -38,7 +94,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           </div>
         </div>
         <button 
-          onClick={() => setIsOpen(false)}
+          onClick={closeSidebar}
           className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
         >
           <X className="w-5 h-5" />
@@ -50,7 +106,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <NavLink
             key={item.path}
             to={item.path}
-            onClick={() => setIsOpen(false)}
+            onClick={closeSidebar}
             className={({ isActive }) => cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group text-sm font-medium",
               isActive 
