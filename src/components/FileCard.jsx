@@ -1,81 +1,110 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FileText, File, Image, FileSpreadsheet, MoreVertical, HardDrive, Calendar } from 'lucide-react';
+import { 
+  Folder, 
+  FileText, 
+  Image as ImageIcon, 
+  Table, 
+  File, 
+  Video, 
+  Archive,
+  MoreVertical,
+  Edit2,
+  Move,
+  Download,
+  Share2,
+  Trash2,
+  Check
+} from 'lucide-react';
 
-export default function FileCard({ file, isSelected, onSelect, onOpenMenu }) {
-  const getFileIcon = (type) => {
-    switch (type) {
-      case 'pdf':
-        return {
-          icon: FileText,
-          bg: 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border-rose-200/60 dark:border-rose-800/60',
-        };
-      case 'excel':
-        return {
-          icon: FileSpreadsheet,
-          bg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border-emerald-200/60 dark:border-emerald-800/60',
-        };
-      case 'image':
-        return {
-          icon: Image,
-          bg: 'bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border-sky-200/60 dark:border-sky-800/60',
-        };
-      case 'word':
-      default:
-        return {
-          icon: File,
-          bg: 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border-blue-200/60 dark:border-blue-800/60',
-        };
+export default function FileCard({ file, isSelected, onSelect, onViewDetails }) {
+  const [showContextMenu, setShowContextMenu] = React.useState(false);
+
+  const getIcon = () => {
+    switch(file.type) {
+      case 'folder': return <Folder className="w-10 h-10 text-blue-500 fill-blue-500/20" />;
+      case 'pdf': return <FileText className="w-10 h-10 text-red-500 fill-red-500/20" />;
+      case 'image': return <ImageIcon className="w-10 h-10 text-emerald-500 fill-emerald-500/20" />;
+      case 'excel': return <Table className="w-10 h-10 text-green-600 fill-green-600/20" />;
+      case 'video': return <Video className="w-10 h-10 text-purple-500 fill-purple-500/20" />;
+      case 'zip': return <Archive className="w-10 h-10 text-amber-500 fill-amber-500/20" />;
+      case 'word': return <FileText className="w-10 h-10 text-blue-600 fill-blue-600/20" />;
+      default: return <File className="w-10 h-10 text-slate-500 fill-slate-500/20" />;
     }
   };
 
-  const iconInfo = getFileIcon(file.type);
-  const IconComponent = iconInfo.icon;
+  const toggleSelection = (e) => {
+    e.stopPropagation();
+    onSelect(file.id);
+  };
+
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.005 }}
-      whileTap={{ scale: 0.99 }}
-      onClick={() => onSelect(file)}
-      className={`border rounded-2xl p-3.5 shadow-2xs cursor-pointer flex items-center justify-between transition-all group ${
-        isSelected
-          ? 'bg-blue-50/80 dark:bg-blue-950/50 border-blue-500 border-l-4 shadow-sm'
-          : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+    <div 
+      onClick={() => onViewDetails(file)}
+      onMouseLeave={() => setShowContextMenu(false)}
+      className={`relative group bg-card dark:bg-slate-900 border rounded-xl p-4 transition-all duration-300 cursor-pointer hover:shadow-md hover:scale-[1.03] ${
+        isSelected ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/10' : 'border-border'
       }`}
     >
-      <div className="flex items-center gap-3 min-w-0 pr-2">
-        <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${iconInfo.bg}`}>
-          <IconComponent className="w-5 h-5" />
+      <div className="flex justify-between items-start mb-4">
+        <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800">
+          {getIcon()}
         </div>
-
-        <div className="flex flex-col min-w-0">
-          <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
-            {file.name}
-          </span>
-          <div className="flex items-center gap-2 text-[10px] text-slate-400 dark:text-slate-500 font-medium">
-            <span className="flex items-center gap-1">
-              <HardDrive className="w-3 h-3" />
-              {file.size}
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              {file.date}
-            </span>
+        
+        <div className="flex flex-col items-end gap-2">
+          <button 
+            onClick={toggleSelection}
+            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+              isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 dark:border-slate-600 opacity-0 group-hover:opacity-100 hover:border-blue-500'
+            }`}
+          >
+            {isSelected && <Check className="w-3.5 h-3.5" />}
+          </button>
+          
+          <div className="relative">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setShowContextMenu(!showContextMenu); }}
+              className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 opacity-0 group-hover:opacity-100 transition-all"
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+            
+            {showContextMenu && (
+              <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg py-1 z-10 animate-in fade-in zoom-in-95 duration-100">
+                <button className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-200">
+                  <Edit2 className="w-3.5 h-3.5" /> Rename
+                </button>
+                <button className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-200">
+                  <Move className="w-3.5 h-3.5" /> Move
+                </button>
+                <button className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-200">
+                  <Download className="w-3.5 h-3.5" /> Download
+                </button>
+                <button className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-200">
+                  <Share2 className="w-3.5 h-3.5" /> Share
+                </button>
+                <div className="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+                <button className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400">
+                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onOpenMenu(file);
-        }}
-        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shrink-0"
-        aria-label="File actions menu"
-      >
-        <MoreVertical className="w-4 h-4" />
-      </button>
-    </motion.div>
+      
+      <div>
+        <h3 className="font-semibold text-slate-900 dark:text-slate-100 truncate text-sm mb-1" title={file.name}>
+          {file.name}
+        </h3>
+        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+          <span>{file.size !== '-' ? file.size : 'Folder'}</span>
+          <span>{formatDate(file.modified)}</span>
+        </div>
+      </div>
+    </div>
   );
 }

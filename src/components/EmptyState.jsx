@@ -1,32 +1,23 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FolderSearch, RefreshCw } from 'lucide-react';
+import { FileQuestion, UploadCloud } from 'lucide-react';
 
-export default function EmptyState({ message, onReset }) {
+export default function EmptyState({ onUpload }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="py-12 px-6 text-center flex flex-col items-center justify-center space-y-3"
-    >
-      <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center">
-        <FolderSearch className="w-7 h-7" />
+    <div className="flex flex-col items-center justify-center py-20 px-4 text-center animate-in fade-in zoom-in-95 duration-300">
+      <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
+        <FileQuestion className="w-10 h-10 text-slate-400" />
       </div>
-      <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-        No items found
-      </h4>
-      <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-        {message || 'No files or folders matched your search criteria.'}
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No Files Found</h3>
+      <p className="text-slate-500 max-w-sm mb-8">
+        This folder is empty. Upload your first document to get started or create a new folder.
       </p>
-      {onReset && (
-        <button
-          onClick={onReset}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-semibold rounded-xl hover:bg-blue-100 transition-colors mt-2"
-        >
-          <RefreshCw className="w-3.5 h-3.5" />
-          Clear filters
-        </button>
-      )}
-    </motion.div>
+      <button 
+        onClick={onUpload}
+        className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all shadow-sm shadow-blue-500/20 hover:shadow-md focus:ring-4 focus:ring-blue-500/50"
+      >
+        <UploadCloud className="w-5 h-5" />
+        Upload First Document
+      </button>
+    </div>
   );
 }
