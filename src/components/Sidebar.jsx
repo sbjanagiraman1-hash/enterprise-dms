@@ -34,6 +34,16 @@ const navItems = [
     path: "/"
   },
   {
+    name: "User Profile",
+    icon: User,
+    path: "/user-profile"
+  },
+  {
+    name: "System State",
+    icon: Activity,
+    path: "/system-state"
+  },
+  {
     name: "System Status",
     icon: Activity,
     path: "/system-status"
