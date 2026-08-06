@@ -1,184 +1,182 @@
-import React, { useState } from 'react';
-import { Search, Filter, Plus, MoreVertical, ChevronDown, Check, UserPlus, Eye, Edit, Key, ShieldOff, Trash2 } from 'lucide-react';
-import { users as initialUsers } from '../data/mockData';
-import { cn } from '../components/Sidebar';
-
-const StatusBadge = ({ status }) => {
-  const styles = {
-    Active: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-    Pending: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
-    Inactive: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700'
-  };
-
-  return (
-    <span className={cn("px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase border", styles[status] || styles.Inactive)}>
-      {status}
-    </span>
-  );
-};
+import React, { useState, useEffect } from 'react';
+import { Search, UserPlus, AlertCircle, CheckCircle, Settings, Shield, Trash2 } from 'lucide-react';
+import { mockUsers } from '../data/mockUsers';
+import UserTable from '../components/UserTable';
+import UserFilters from '../components/UserFilters';
+import InviteUserModal from '../components/InviteUserModal';
+import UserProfileDrawer from '../components/UserProfileDrawer';
+import LoadingSkeleton from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
 
 export default function UserManagement() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [users, setUsers] = useState(initialUsers);
-  const [openActionMenuId, setOpenActionMenuId] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [activeUser, setActiveUser] = useState(null);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState(null);
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    // Simulate API fetch
+    const timer = setTimeout(() => {
+      setUsers(mockUsers);
+      setLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const toggleActionMenu = (id) => {
-    setOpenActionMenuId(openActionMenuId === id ? null : id);
+  const showSnackbar = (message, type = 'success') => {
+    setSnackbar({ message, type });
+    setTimeout(() => setSnackbar(null), 3000);
   };
 
+  const handleSelectUser = (id) => {
+    setSelectedUsers(prev => 
+      prev.includes(id) ? prev.filter(userId => userId !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedUsers(filteredUsers.map(u => u.id));
+    } else {
+      setSelectedUsers([]);
+    }
+  };
+
+  const handleViewProfile = (user) => {
+    setActiveUser(user);
+  };
+
+  const filteredUsers = users.filter(u => 
+    u.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.department.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="flex flex-col gap-6 max-w-[1400px] mx-auto w-full animate-in fade-in duration-300">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground tracking-tight">User Management</h2>
-          <p className="text-sm text-slate-500 mt-1">Manage organizational access and roles across the instance.</p>
+    <div className="flex relative w-full">
+      
+      {/* Snackbar */}
+      {snackbar && (
+        <div className={`fixed top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 animate-in slide-in-from-top-4 z-50 shadow-sm border ${
+          snackbar.type === 'success' 
+            ? 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50' 
+            : 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50'
+        }`}>
+          <CheckCircle className="w-4 h-4" /> {snackbar.message}
         </div>
-        
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
-          <UserPlus className="w-4 h-4" />
-          Invite User
-        </button>
-      </div>
+      )}
 
-      <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border shadow-sm flex flex-col overflow-hidden">
-        
-        <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50/50 dark:bg-slate-800/20">
-          <div className="relative w-full sm:max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input 
-              type="text"
-              placeholder="Search users..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-950 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-shadow"
-            />
-          </div>
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${activeUser ? 'lg:pr-[400px] xl:pr-[450px]' : ''}`}>
+        <div className="flex flex-col w-full">
           
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <button className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-950 border border-border rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex-1 sm:flex-none justify-center">
-              Role
-              <ChevronDown className="w-4 h-4 text-slate-400" />
-            </button>
-            <button className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-950 border border-border rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex-1 sm:flex-none justify-center">
-              Department
-              <ChevronDown className="w-4 h-4 text-slate-400" />
-            </button>
-            <button className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-950 border border-border rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors flex-1 sm:flex-none justify-center">
-              Status
-              <ChevronDown className="w-4 h-4 text-slate-400" />
-            </button>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto min-h-[400px]">
-          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead className="text-[11px] font-semibold tracking-wider text-slate-500 uppercase bg-slate-50/50 dark:bg-slate-800/50 border-b border-border sticky top-0 z-10">
-              <tr>
-                <th scope="col" className="p-4 w-4">
-                  <div className="flex items-center">
-                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white dark:bg-slate-900" />
-                  </div>
-                </th>
-                <th scope="col" className="px-4 py-3">Name</th>
-                <th scope="col" className="px-4 py-3">Role</th>
-                <th scope="col" className="px-4 py-3">Department</th>
-                <th scope="col" className="px-4 py-3">Status</th>
-                <th scope="col" className="px-4 py-3">Last Login</th>
-                <th scope="col" className="px-4 py-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border relative">
-              {filteredUsers.length > 0 ? filteredUsers.map((user) => (
-                <tr key={user.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors group">
-                  <td className="p-4">
-                    <div className="flex items-center">
-                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 bg-white dark:bg-slate-900" />
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-200 dark:border-blue-800/50 shadow-sm">
-                        {user.avatar}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-foreground">{user.name}</div>
-                        <div className="text-xs text-slate-500 mt-0.5">{user.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap font-medium">{user.role}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">{user.department}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <StatusBadge status={user.status} />
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-slate-500">{user.lastLogin}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-right relative">
-                    <button 
-                      onClick={() => toggleActionMenu(user.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </button>
-                    
-                    {openActionMenuId === user.id && (
-                      <div className="absolute right-8 top-10 w-48 bg-card dark:bg-slate-900 rounded-xl shadow-lg border border-border py-1.5 animate-in fade-in zoom-in-95 duration-200 z-50 text-left">
-                        <button className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                          <Eye className="w-4 h-4" /> View Details
-                        </button>
-                        <button className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                          <Edit className="w-4 h-4" /> Edit User
-                        </button>
-                        <button className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                          <Key className="w-4 h-4" /> Reset Password
-                        </button>
-                        <div className="h-px bg-border my-1.5"></div>
-                        <button className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-yellow-600 dark:text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors">
-                          <ShieldOff className="w-4 h-4" /> Deactivate
-                        </button>
-                        <button className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                          <Trash2 className="w-4 h-4" /> Delete
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan="7" className="px-4 py-16 text-center text-slate-500">
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
-                        <Search className="w-6 h-6 text-slate-400" />
-                      </div>
-                      <p className="font-semibold text-slate-700 dark:text-slate-300">No users found</p>
-                      <p className="text-sm">We couldn't find anyone matching "{searchTerm}"</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="p-4 border-t border-border bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-between mt-auto">
-          <span className="text-sm text-slate-500">
-            Showing <span className="font-semibold text-foreground">1</span> to <span className="font-semibold text-foreground">{filteredUsers.length}</span> of <span className="font-semibold text-foreground">{users.length}</span> results
-          </span>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 text-sm font-medium border border-border rounded-lg bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-50 transition-colors shadow-sm" disabled>
-              Previous
-            </button>
-            <button className="px-3 py-1.5 text-sm font-medium border border-border rounded-lg bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors shadow-sm">
-              Next
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4 shrink-0">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">User Management</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage users, departments, roles, permissions and account access.</p>
+            </div>
+            
+            <button 
+              onClick={() => setIsInviteModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors shadow-sm flex items-center gap-2 focus:ring-4 focus:ring-blue-500/50 w-full sm:w-auto justify-center"
+            >
+              <UserPlus className="w-4 h-4" />
+              Invite User
             </button>
           </div>
-        </div>
 
+          {/* Toolbar (Bulk Actions & Search) */}
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-4 gap-4 shrink-0">
+            {selectedUsers.length > 0 ? (
+              <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl px-4 py-2 animate-in fade-in zoom-in-95 w-full xl:w-auto overflow-x-auto whitespace-nowrap">
+                <span className="text-sm font-semibold text-blue-700 dark:text-blue-400 mr-2">
+                  {selectedUsers.length} selected
+                </span>
+                <div className="h-4 w-px bg-blue-200 dark:bg-blue-800 hidden sm:block"></div>
+                <button className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2 py-1 rounded transition-colors hidden sm:flex items-center gap-1.5">
+                  <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" /> Assign Role
+                </button>
+                <button className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2 py-1 rounded transition-colors hidden sm:flex items-center gap-1.5">
+                  <Settings className="w-4 h-4 text-blue-600 dark:text-blue-400" /> Assign Dept
+                </button>
+                <button className="text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 px-2 py-1 rounded transition-colors flex items-center gap-1.5 ml-auto sm:ml-0">
+                  <Trash2 className="w-4 h-4" /> Delete
+                </button>
+              </div>
+            ) : (
+              <UserFilters onRefresh={() => { setLoading(true); setTimeout(() => setLoading(false), 500); }} />
+            )}
+            
+            <div className="relative w-full xl:w-72 shrink-0">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input 
+                type="text"
+                placeholder="Search by name, email or ID..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-shadow"
+              />
+            </div>
+          </div>
+
+          {error ? (
+            <div className="flex flex-col items-center justify-center py-20 animate-in fade-in flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-border">
+              <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mb-4">
+                <AlertCircle className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Unable to load users</h3>
+              <p className="text-slate-500 text-center max-w-sm mb-6">There was an error communicating with the server.</p>
+              <button 
+                onClick={() => { setLoading(true); setError(false); setTimeout(() => setLoading(false), 800); }}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all shadow-sm focus:ring-4 focus:ring-blue-500/50"
+              >
+                Retry
+              </button>
+            </div>
+          ) : loading ? (
+            <div className="flex-1 mt-2">
+              <LoadingSkeleton view="list" />
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="flex-1 bg-white dark:bg-slate-900 rounded-2xl border border-border flex items-center justify-center">
+              <EmptyState onUpload={() => setIsInviteModalOpen(true)} />
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col min-h-0 animate-in fade-in duration-300">
+              <UserTable 
+                users={filteredUsers}
+                selectedUsers={selectedUsers}
+                onSelectUser={handleSelectUser}
+                onSelectAll={handleSelectAll}
+                onViewProfile={handleViewProfile}
+              />
+            </div>
+          )}
+
+        </div>
       </div>
+
+      <UserProfileDrawer user={activeUser} onClose={() => setActiveUser(null)} />
+      
+      {/* Mobile overlay for panel */}
+      {activeUser && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setActiveUser(null)}
+          aria-hidden="true"
+        />
+      )}
+
+      <InviteUserModal 
+        isOpen={isInviteModalOpen} 
+        onClose={() => { setIsInviteModalOpen(false); showSnackbar('User invitation sent successfully!'); }} 
+      />
     </div>
   );
 }
