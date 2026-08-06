@@ -12,7 +12,13 @@ import {
   FolderOpen,
   ClipboardCheck,
   Users,
-  X
+  Activity,
+  Command,
+  Smartphone,
+  Bell,
+  X,
+  Activity,
+  User
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { useSidebar } from '../context/SidebarContext';
@@ -27,6 +33,41 @@ const navItems = [
     name: "Enterprise Analytics",
     icon: HardDrive, 
     path: "/"
+  },
+  {
+    name: "System State",
+    icon: Activity,
+    path: "/system-state"
+  },
+  {
+    name: "User Profile",
+    icon: User,
+    path: "/user-profile"
+  },
+  {
+    name: "System Status",
+    icon: Activity,
+    path: "/system-status"
+  },
+  {
+    name: "Global Command Palette",
+    icon: Command,
+    path: "/global-command-palette"
+  },
+  {
+    name: "Mobile Analytics",
+    icon: Smartphone,
+    path: "/mobile-analytics"
+  },
+  {
+    name: "Mobile File Explorer",
+    icon: FolderOpen,
+    path: "/mobile-file-explorer"
+  },
+  {
+    name: "Enterprise Notification Center",
+    icon: Bell,
+    path: "/enterprise-notification-center"
   },
   {
     name: "File Explorer",
