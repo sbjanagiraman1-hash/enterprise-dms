@@ -52,12 +52,53 @@
 
 @layer base {
   * {
+    box-sizing: border-box;
     border-color: var(--border);
   }
+  
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  img,
+  svg,
+  canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  button {
+    white-space: nowrap;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
     transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+.main-content {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  padding: 24px;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
   }
 }
